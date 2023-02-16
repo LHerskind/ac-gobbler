@@ -8,8 +8,7 @@ CSV-file such that it can easily be passed into Python or similar tools.
 
 ## Usage
 
-The tool is written in Rust, and can be compiled using `cargo build --release`. The compiled binary will be
-located in `target/release/aztec-data-gobbler`. The key-value store is written to disk for later use, and is saved in
+The tool is written in Rust, and can be compiled using `cargo build --release`. The key-value store is written to disk for later use, and is saved in
 the directory passed in to `--data-path` or use the default.
 
 ### Syncing
