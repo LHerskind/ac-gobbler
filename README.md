@@ -19,7 +19,7 @@ To sync the node, you need point it towards an L1 node (can be Infura) and can t
 ```bash
 Synchronise the local database with the rollup
 
-Usage: ac-l1-gobbler sync [OPTIONS]
+Usage: ac-gobbler sync [OPTIONS]
 
 Options:
       --rpc-url <RPC_URL>      The RPC url to an ethereum node [default: http://localhost:8545]
@@ -37,7 +37,7 @@ The tool can also export the data to a CSV-file, which can be used in Python or 
 ```bash
 Exports all transactions to a csv file
 
-Usage: ac-l1-gobbler export [OPTIONS]
+Usage: ac-gobbler export [OPTIONS]
 
 Options:
       --export-path <EXPORT_PATH>  The file to write csv to [default: ./export/txs.csv]
@@ -54,7 +54,7 @@ what is going on in a specific block.
 ```bash
 Print the contents of a block in a semi readable manner
 
-Usage: ac-l1-gobbler decode [OPTIONS] <ROLLUP_ID>
+Usage: ac-gobbler decode [OPTIONS] <ROLLUP_ID>
 
 Arguments:
   <ROLLUP_ID>  The rollup id of the block to decode
