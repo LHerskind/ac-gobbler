@@ -1,6 +1,6 @@
 use ethers::types::{Bytes, H256, U256};
 use serde::{Deserialize, Serialize};
-use std::ops::Shr;
+use std::ops::Shl;
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct G1Point {
@@ -46,10 +46,10 @@ impl From<Bytes> for Proof {
 
         for i in 0..4 {
             let offset = 68 * i;
-            recursive_p1_x += U256::from_big_endian(&src[32 + i * 32..64 + i * 32]).shr(offset);
-            recursive_p1_y += U256::from_big_endian(&src[160 + i * 32..192 + i * 32]).shr(offset);
-            recursive_p2_x += U256::from_big_endian(&src[288 + i * 32..320 + i * 32]).shr(offset);
-            recursive_p2_y += U256::from_big_endian(&src[416 + i * 32..448 + i * 32]).shr(offset);
+            recursive_p1_x += U256::from_big_endian(&src[32 + i * 32..64 + i * 32]).shl(offset);
+            recursive_p1_y += U256::from_big_endian(&src[160 + i * 32..192 + i * 32]).shl(offset);
+            recursive_p2_x += U256::from_big_endian(&src[288 + i * 32..320 + i * 32]).shl(offset);
+            recursive_p2_y += U256::from_big_endian(&src[416 + i * 32..448 + i * 32]).shl(offset);
         }
 
         proof.recursive_p1 = G1Point {
