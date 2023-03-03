@@ -9,8 +9,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct FeeAsset {
-    asset_id: U256,
-    amount: U256,
+    pub asset_id: U256,
+    pub amount: U256,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]

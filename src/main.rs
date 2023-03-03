@@ -11,7 +11,7 @@ use ethers::{
 use microkv::MicroKV;
 use clap::Parser;
 use crate::cli::collector::sync_blocks;
-use crate::cli::export::export_transactions_csv;
+use crate::cli::export::{export_defi_csv, export_fees_csv, export_transactions_csv};
 
 pub const DEPLOYMENT_BLOCK: u64 = 14923081;
 
@@ -52,8 +52,8 @@ pub enum Commands {
         #[clap(long, default_value_t = String::from("./data/"), help = "The path to the dir of the database")]
         data_path: String,
     },
-    #[clap(name = "export", about = "Exports all transactions to a csv file")]
-    Export {
+    #[clap(name = "export-txs", about = "Exports inner transactions to a csv file")]
+    ExportTxs {
         #[clap(long, default_value_t = String::from("./export/txs.csv"), help = "The file to write csv to")]
         export_path: String,
         #[clap(long, short, help = "Export only deposits and withdrawals")]
@@ -61,7 +61,20 @@ pub enum Commands {
         #[clap(long, default_value_t = String::from("./data/"), help = "The path to the dir of the database")]
         data_path: String,
     },
-
+    #[clap(name = "export-fees", about = "Exports fee transactions to a csv file")]
+    ExportFees {
+        #[clap(long, default_value_t = String::from("./export/fees.csv"), help = "The file to write csv to")]
+        export_path: String,
+        #[clap(long, default_value_t = String::from("./data/"), help = "The path to the dir of the database")]
+        data_path: String,
+    },
+    #[clap(name = "export-defi", about = "Exports defi transactions to a csv file")]
+    ExportDefi {
+        #[clap(long, default_value_t = String::from("./export/defi.csv"), help = "The file to write csv to")]
+        export_path: String,
+        #[clap(long, default_value_t = String::from("./data/"), help = "The path to the dir of the database")]
+        data_path: String,
+    }
 }
 
 fn get_db(path: String) -> MicroKV {
@@ -82,7 +95,7 @@ async fn main() {
                 if keys.len() == 0 {
                     return (0, DEPLOYMENT_BLOCK);
                 }
-                let max_key = keys.iter().map(|key| match key.parse::<u64>() {
+                let max_key = keys.iter().map(|key| match key.parse() {
                     Ok(key) => key,
                     Err(_) => 0,
                 }).max().unwrap();
@@ -99,8 +112,14 @@ async fn main() {
         Commands::Decode { rollup_id, data_path } => {
             decode_block(&get_db(data_path), rollup_id);
         },
-        Commands::Export { export_path, l1_only, data_path } => {
+        Commands::ExportTxs { export_path, l1_only, data_path } => {
             export_transactions_csv(&get_db(data_path), export_path, l1_only);
+        }
+        Commands::ExportFees { export_path, data_path } => {
+            export_fees_csv(&get_db(data_path), export_path);
+        }
+        Commands::ExportDefi { export_path, data_path } => {
+            export_defi_csv(&get_db(data_path), export_path);
         }
     }
 }
