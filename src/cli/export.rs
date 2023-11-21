@@ -12,6 +12,7 @@ use crate::types::defi_interaction::{AssetType, DefiInteraction};
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct ExportInnerProofData {
     pub rollup_id: U256,
+    pub timestamp: U256,
     pub proof_id: ProofId,
     pub note_commitment_1: H256,
     pub note_commitment_2: H256,
@@ -76,6 +77,7 @@ pub fn export_transactions_csv(db: &MicroKV, path: String, l1_only: bool) {
 
             let tx = ExportInnerProofData {
                 rollup_id: block.inner.header.rollup_id,
+                timestamp: block.metadata.timestamp.unwrap_or_default(),
                 proof_id: tx.proof_id,
                 note_commitment_1: tx.note_commitment_1,
                 note_commitment_2: tx.note_commitment_2,

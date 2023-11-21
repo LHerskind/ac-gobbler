@@ -94,6 +94,7 @@ impl From<Bytes> for Header {
 pub struct Metadata {
     pub tx_hash: TxHash,
     pub block_number: U64,
+    pub timestamp: Option<U256>,
 }
 
 #[derive(Debug, Default, Serialize, Deserialize)]
@@ -145,11 +146,12 @@ pub struct Block {
     pub sequencer: Address,
 }
 
-impl From<(TxHash, U64, Bytes, RollupProcessedFilter)> for Block {
+impl From<(TxHash, U64, U256, Bytes, RollupProcessedFilter)> for Block {
     fn from(
-        (tx_hash, block_number, proof_calldata, rollup_processed_event): (
+        (tx_hash, block_number, timestamp, proof_calldata, rollup_processed_event): (
             TxHash,
             U64,
+            U256,
             Bytes,
             RollupProcessedFilter,
         ),
@@ -159,6 +161,7 @@ impl From<(TxHash, U64, Bytes, RollupProcessedFilter)> for Block {
         block.metadata = Metadata {
             tx_hash,
             block_number,
+            timestamp: Some(timestamp),
         };
 
         block.next_expected_defi_hashes = rollup_processed_event

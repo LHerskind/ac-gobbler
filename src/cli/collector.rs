@@ -21,7 +21,8 @@ async fn decode_block(client: &Arc<Provider<Http>>, db: &MicroKV, tx_hash: H256,
     };
 
     let proof_calldata = ProcessRollupCall::decode(&tx.input).unwrap().proof_data;
-    let block = Block::from((tx_hash, tx.block_number.unwrap(), proof_calldata, event));
+    let l1_block = client.get_block(tx.block_number.unwrap()).await.unwrap().unwrap();
+    let block = Block::from((tx_hash, tx.block_number.unwrap(), l1_block.timestamp, proof_calldata, event));
 
     let id = format!("{:?}", block.inner.header.rollup_id);
 
